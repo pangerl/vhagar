@@ -25,7 +25,7 @@ func NewPGClient(conf DB) (*PGClient, error) {
 	dbClient := &PGClient{
 		Conn: make(map[string]*pgx.Conn),
 	}
-	databases := []string{"qv30", "user", "customer"}
+	databases := []string{"qv30", "users", "customer"}
 	for _, dbName := range databases {
 		connString := connStr(conf, dbName)
 		conn, err := pgx.Connect(context.Background(), connString)
