@@ -151,7 +151,7 @@ func (t *Tenant) SetCustomerNum(corpid string) {
 
 // SetUserNum 设置员工数
 func (t *Tenant) SetUserNum(corpid string) {
-	userNum, _ := queryUserNum(t.PGClient.Conn["user"], corpid)
+	userNum, _ := queryUserNum(t.PGClient.Conn["users"], corpid)
 	for _, corp := range t.Corp {
 		if corp.Corpid == corpid {
 			corp.UserNum = userNum
