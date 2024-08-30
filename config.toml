@@ -1,24 +1,12 @@
-projectname = "千金药业"
+projectname = "xxx"
 # 可配置网络代理，支持 http/https 协议
 # proxyURL := "http://proxyuser:proxypassword@proxy_ip:proxy_port"
-proxyurl = "http://wshoto:123qazwsx@172.18.0.17:9253"
+proxyurl = ""
 
 [tenant]
-[[tenant.corp]]
-corpid = "wxbe45d6b56a61e293"
+corpid = "xxxxxxxx"
+# 是否开通会话存档功能
 convenabled = true
-[[tenant.corp]]
-corpid = "ww70adef74dc10951c"
-convenabled = true
-[[tenant.corp]]
-corpid = "wwd4fc7dcb8f5a0d99"
-convenabled = true
-[[tenant.corp]]
-corpid = "ww6b882761610096ad"
-convenabled = true
-[[tenant.corp]]
-corpid = "wwe2007d5a571677f3"
-convenabled = false
 
 [crontab]
 inspectjob = true
@@ -27,33 +15,33 @@ testjob = false
 [inspection]
 # 配置定时任务，每天09:30启动巡检任务
 scheducron = "30 09 * * *"
-# 巡检机器人，支持配置多个机器人 "5c8daf9d-bebb-4453-bab4-aa3fe56eeac3"
-robotkey = ["8ab989f5-d86f-4c99-b95f-5d23a30eb351"]
+# 巡检机器人，支持配置多个机器人
+robotkey = ["xxxx-d86f-4c99-b95f-5d23a30eb351"]
 # 告警@人 ["lanpang", "mark"]
 userlist = []
 
 [pg]
-ip = "192.9.253.195"
+ip = "x.x.x.x"
 port = 5432
 username = "postgres"
-password = "wshoto@2022"
+password = "xxx"
 sslmode = false
 
 [es]
-ip = "192.9.253.197"
+ip = "x.x.x.x"
 port = 9200
 username = "elastic"
-password = "wshoto@2022"
+password = "xxx"
 sslmode = false
 
 [nacos]
-server = "http://192.9.253.198:8848"
+server = "http://x.x.x.x:8848"
 username = "nacos"
 password = "nacos"
 namespace = "qw-uat"
 
 [rocketmq]
-rocketmqDashboard = "http://192.9.253.205:8081"
+rocketmqDashboard = "http://x.x.x.x:8081"
 
 [metric]
 # 定义 metric 的端口
