@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"context"
 	"log"
 	"vhagar/inspect"
 	"vhagar/libs"
@@ -55,6 +56,11 @@ var inspectCmd = &cobra.Command{
 				}
 				if esClient != nil {
 					esClient.Stop()
+				}
+				if customerClient != nil {
+					if err := customerClient.Close(context.Background()); err != nil {
+						log.Printf("Failed to close connection for database %s: %v", "customer", err)
+					}
 				}
 			}()
 			_inspect.Tenant = &inspect.Tenant{
