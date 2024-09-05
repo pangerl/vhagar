@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"context"
 	"log"
 	"vhagar/inspect"
 	"vhagar/libs"
@@ -39,6 +40,8 @@ func crontabJob() {
 		// 创建ESClient，PGClient
 		esClient, _ := libs.NewESClient(CONFIG.ES)
 		pgClient, _ := libs.NewPGClient(CONFIG.PG)
+		customerClient, _ := libs.NewCustomerClient(CONFIG.Customer)
+
 		defer func() {
 			if pgClient != nil {
 				pgClient.Close()
@@ -46,11 +49,17 @@ func crontabJob() {
 			if esClient != nil {
 				esClient.Stop()
 			}
+			if customerClient != nil {
+				if err := customerClient.Close(context.Background()); err != nil {
+					log.Printf("Failed to close connection for database %s: %v", "customer", err)
+				}
+			}
 		}()
 		_inspect.Tenant = &inspect.Tenant{
-			ESClient: esClient,
-			PGClient: pgClient,
-			Corp:     CONFIG.Tenant.Corp,
+			ESClient:       esClient,
+			PGClient:       pgClient,
+			Corp:           CONFIG.Tenant.Corp,
+			CustomerClient: customerClient,
 		}
 		// 加入定时任务
 		_, err := c.AddFunc(CONFIG.Cron["tenant"].Scheducron, func() {
@@ -61,7 +70,7 @@ func crontabJob() {
 		}
 	}
 	//  doris 巡检 job
-	if CONFIG.Cron["tenant"].Crontab {
+	if CONFIG.Cron["doris"].Crontab {
 		// 创建 mysqlClinet
 		mysqlClinet, _ := libs.NewMysqlClient(CONFIG.Doris.DB, "wshoto")
 		defer func() {

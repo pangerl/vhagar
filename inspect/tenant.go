@@ -306,7 +306,7 @@ func queryCorpName(conn *pgx.Conn, corpid string) (string, error) {
 // 解密 ID
 func querySuiteId(conn *pgx.Conn, corpid string) (string, error) {
 	var suiteId string
-	query := "SELECT suite_id FROM qw_base_tenant_corp_info WHERE tenant_id=$1 LIMIT 1"
+	query := "SELECT org_corp_id FROM qw_base_tenant_corp_info WHERE tenant_id=$1 LIMIT 1"
 	err := conn.QueryRow(context.Background(), query, corpid).Scan(&suiteId)
 	if err != nil {
 		log.Printf("Failed info: %s \n", err)
