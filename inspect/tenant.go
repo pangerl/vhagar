@@ -45,7 +45,6 @@ func tenantDetail(tenant *Tenant) {
 		//fmt.Println(*corp)
 	}
 }
-
 func tenantNotifier(t *Tenant, name string, userlist []string) []*notifier.WeChatMarkdown {
 
 	var inspectList []*notifier.WeChatMarkdown
@@ -123,7 +122,7 @@ func headCorpString(t *Tenant, name string) string {
 
 // SetCustomerGroupUserNum 设置客户群人数
 func (t *Tenant) SetCustomerGroupUserNum(corpid string) {
-	customergroupusernum, _ := queryCustomerGroupUserNum(t.PGClient.Conn["customer"], corpid)
+	customergroupusernum, _ := queryCustomerGroupUserNum(t.CustomerClient, corpid)
 	for _, corp := range t.Corp {
 		if corp.Corpid == corpid {
 			corp.CustomerGroupUserNum = customergroupusernum
@@ -134,7 +133,7 @@ func (t *Tenant) SetCustomerGroupUserNum(corpid string) {
 
 // SetCustomerGroupNum 设置客户群数
 func (t *Tenant) SetCustomerGroupNum(corpid string) {
-	customergroupnum, _ := queryCustomerGroupNum(t.PGClient.Conn["customer"], corpid)
+	customergroupnum, _ := queryCustomerGroupNum(t.CustomerClient, corpid)
 	for _, corp := range t.Corp {
 		if corp.Corpid == corpid {
 			corp.CustomerGroupNum = customergroupnum
@@ -148,12 +147,15 @@ func (t *Tenant) SetMessageNum(corpid string, dateNow time.Time) {
 	date := dateNow.AddDate(0, 0, -1)
 	startTime := getZeroTime(date).UnixNano() / 1e6
 	endTime := getZeroTime(dateNow).UnixNano() / 1e6
-	var suiteId string
+	// 兼容加密 ID
+	suiteId := corpid
 	if strings.HasPrefix(corpid, "wpIaoBE") {
+		//fmt.Println("加密 ID 为", corpid)
 		suiteId, _ = querySuiteId(t.PGClient.Conn["qv30"], corpid)
+		//fmt.Println("解密 ID 为", suiteId)
 	}
-	suiteId = corpid
 	messagenum, _ := countMessageNum(t.ESClient, suiteId, startTime, endTime)
+	//fmt.Println("会话数为", messagenum)
 	for _, corp := range t.Corp {
 		if corp.Corpid == corpid {
 			corp.MessageNum = messagenum

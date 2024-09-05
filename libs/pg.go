@@ -39,6 +39,16 @@ func NewPGClient(conf DB) (*PGClient, error) {
 	return dbClient, nil
 }
 
+func NewCustomerClient(conf DB) (*pgx.Conn, error) {
+	connString := connStr(conf, "customer")
+	conn, err := pgx.Connect(context.Background(), connString)
+	if err != nil {
+		log.Printf("Failed to connect to database %s: %s\n", "customer", err)
+		return nil, err
+	}
+	return conn, nil
+}
+
 func connStr(conf DB, db string) string {
 	scheme := map[bool]string{true: "require", false: "disable"}[conf.Sslmode]
 	// 对密码进行 URL 编码

@@ -5,6 +5,7 @@ package inspect
 
 import (
 	"database/sql"
+	"github.com/jackc/pgx/v5"
 	"github.com/olivere/elastic/v7"
 	"vhagar/libs"
 )
@@ -22,9 +23,10 @@ type Inspect struct {
 }
 
 type Tenant struct {
-	Corp     []*Corp
-	ESClient *elastic.Client
-	PGClient *libs.PGClient
+	Corp           []*Corp
+	ESClient       *elastic.Client
+	PGClient       *libs.PGClient
+	CustomerClient *pgx.Conn
 }
 
 type Corp struct {

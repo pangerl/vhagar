@@ -48,6 +48,7 @@ var inspectCmd = &cobra.Command{
 			// 创建ESClient，PGClient
 			esClient, _ := libs.NewESClient(CONFIG.ES)
 			pgClient, _ := libs.NewPGClient(CONFIG.PG)
+			customerClient, _ := libs.NewCustomerClient(CONFIG.Customer)
 			defer func() {
 				if pgClient != nil {
 					pgClient.Close()
@@ -57,9 +58,10 @@ var inspectCmd = &cobra.Command{
 				}
 			}()
 			_inspect.Tenant = &inspect.Tenant{
-				ESClient: esClient,
-				PGClient: pgClient,
-				Corp:     CONFIG.Tenant.Corp,
+				ESClient:       esClient,
+				PGClient:       pgClient,
+				Corp:           CONFIG.Tenant.Corp,
+				CustomerClient: customerClient,
 			}
 			inspect.TenantTask(_inspect, 0)
 		}

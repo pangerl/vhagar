@@ -32,6 +32,7 @@ type Config struct {
 	Doris       inspect.DorisCfg            `toml:"doris"`
 	Rocketmq    libs.Rocketmq               `toml:"rocketmq"`
 	Metric      metric.Config               `toml:"metric"`
+	Customer    libs.DB                     `toml:"customer"`
 }
 type dorisCfg struct {
 	libs.DB
